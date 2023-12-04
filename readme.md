@@ -16,6 +16,8 @@ Como alterações adicionais, planejamos:
 
 A partir deste ponto o readme é um exemplo de como podemos escrevê-lo.
 
+###  Análise do código
+
 ### main.cpp
 
 Nenhuma alteração.
@@ -26,3 +28,9 @@ Alterado a linha x:
 
 > int rotation = 10;  
 > rotation += 1;
+
+### Referências
+
+Sites e comandos úteis:
+- espaço duplo ('  '): cria uma nova linha
+- stackedit (https://stackedit.io/app#): site pode ser usado para pré-visualizar readme.md antes de comitá-lo.
