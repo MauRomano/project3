@@ -31,8 +31,8 @@ Mencionando algo:
 
 Demonstrando código:
 
-    20 int rotation = 10;  
-    21 rotation += 1;
+    20. int rotation = 10;  
+    21. rotation += 1;
 
 ### Referências
 
