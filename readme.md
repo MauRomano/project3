@@ -31,11 +31,11 @@ Mencionando algo:
 
 Demonstrando código:
 
-    20. int rotation = 10;  
-    21. rotation += 1;
+    20 &nbsp; int rotation = 10;  
+    21 &nbsp; rotation += 1;
 
 ### Referências
 
 Sites e comandos úteis:
-- espaço duplo ('  '): cria uma nova linha
+- espaço duplo (' &nbsp;'): cria uma nova linha
 - stackedit (https://stackedit.io/app#): site pode ser usado para pré-visualizar readme.md antes de comitá-lo.
