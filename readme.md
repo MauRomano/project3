@@ -24,5 +24,5 @@ Nenhuma alteração.
 
 Alterado a linha x:
 
-> int rotation = 10;
+> int rotation = 10;  
 > rotation += 1;
