@@ -29,6 +29,11 @@ Alterado a linha x:
 > int rotation = 10;  
 > rotation += 1;
 
+Alterado a linha y:
+
+    int rotation = 10;  
+    rotation += 1;
+
 ### Referências
 
 Sites e comandos úteis:
