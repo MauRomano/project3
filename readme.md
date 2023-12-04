@@ -24,15 +24,15 @@ Nenhuma alteração.
 
 ### window.hpp
 
-Alterado a linha x:
+Mencionando algo:
 
 > int rotation = 10;  
 > rotation += 1;
 
-Alterado a linha y:
+Demonstrando código:
 
-    int rotation = 10;  
-    rotation += 1;
+    20 int rotation = 10;  
+    21 rotation += 1;
 
 ### Referências
 
