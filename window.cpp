@@ -17,10 +17,10 @@ void Window::onEvent(SDL_Event const &event)
       m_speed += 0.5f;
       if (m_speed > 10.0f) m_speed = 10.0f;
     }
-    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a)
-      m_angleRot = 0.01f;
-    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d)
-      m_angleRot = -0.01f;
+    if (event.key.keysym.sym == SDLK_LEFT && m_speed !=0) 
+      m_angleRot = 0.07f;
+    if (event.key.keysym.sym == SDLK_RIGHT && m_speed !=0)
+      m_angleRot = -0.07f;
   }
   if (event.type == SDL_KEYUP)
   {
@@ -36,14 +36,15 @@ void Window::onEvent(SDL_Event const &event)
       m_speed += -0.1f;
       if (m_speed < 0.0f) m_speed = 0.0f;
     }
-    if ((event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a) &&
+    if ((event.key.keysym.sym == SDLK_LEFT) &&
         m_angleRot > 0)
       m_angleRot = 0.0f;
-    if ((event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d) &&
+    if ((event.key.keysym.sym == SDLK_RIGHT) &&
         m_angleRot < 0)
       m_angleRot = 0.0f;
   }
 }
+
 
 void Window::onCreate()
 {
@@ -181,8 +182,7 @@ void Window::onPaintUI()
 
 void Window::onResize(glm::ivec2 const &size) { m_viewportSize = size; }
 
-void Window::onUpdate()
-{
+void Window::onUpdate(){
   auto const deltaTime{gsl::narrow_cast<float>(getDeltaTime())};
   if (m_speed < 0.0f)
   {
@@ -199,19 +199,25 @@ void Window::onUpdate()
   m_car.m_position.z += cos(m_car.m_angle) * deltaTime * m_speed;
   m_car.m_position.x += sin(m_car.m_angle) * deltaTime * m_speed;
 
-  if (m_car.m_position.z > 5.0f)
+
+
+  if (m_car.m_position.z > m_ground.m_maxLimit)
   {
-    m_car.m_position.z = -5.0f;
-  } else if (m_car.m_position.z < -5.0f)
+    m_car.m_position.z = m_ground.m_maxLimit;
+    m_speed = m_speed * 0.2;
+  } else if (m_car.m_position.z < -m_ground.m_maxLimit)
   {
-    m_car.m_position.z = 5.0f;
+    m_car.m_position.z = -m_ground.m_maxLimit;
+    m_speed = m_speed * 0.2;
   }
-  if (m_car.m_position.x > 5.0f)
+  if (m_car.m_position.x > m_ground.m_maxLimit)
   {
-    m_car.m_position.x = -5.0f;
-  } else if (m_car.m_position.x < -5.0f)
+    m_car.m_position.x = m_ground.m_maxLimit;
+    m_speed = m_speed * 0.2;
+  } else if (m_car.m_position.x < -m_ground.m_maxLimit)
   {
-    m_car.m_position.x = 5.0f;
+    m_car.m_position.x = -m_ground.m_maxLimit;
+    m_speed = m_speed * 0.2;
   }
 }
 

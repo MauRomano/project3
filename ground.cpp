@@ -38,10 +38,10 @@ void Ground::paint()
 
   // Draw a grid of 2N+1 x 2N+1 tiles on the xz plane, centered around the
   // origin
-  auto const N{10};
-  for (auto const z : iter::range(-N, N + 1))
+  /* auto const N{10}; */
+  for (auto const z : iter::range(-m_numOfBlocks, m_numOfBlocks + 1))
   {
-    for (auto const x : iter::range(-N, N + 1))
+    for (auto const x : iter::range(-m_numOfBlocks, m_numOfBlocks + 1))
     {
       // Set model matrix as a translation matrix
       glm::mat4 model{1.0f};
