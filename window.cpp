@@ -45,13 +45,16 @@ void Window::onEvent(SDL_Event const &event)
   }
 }
 
-
 void Window::onCreate()
 {
   auto const assetsPath{abcg::Application::getAssetsPath()};
 
   abcg::glClearColor(0, 0, 0, 1);
   abcg::glEnable(GL_DEPTH_TEST);
+
+  m_randomEngine.seed(
+    std::chrono::steady_clock::now().time_since_epoch().count());
+
 
   m_program =
       abcg::createOpenGLProgram({{.source = assetsPath + "depth.vert",
@@ -85,10 +88,17 @@ void Window::setupCar(Car &m_car)
 }
 
 void Window::setupBlock(Block &m_block){
-  glm::vec3 const initPos{1.5f, 0.3f, 3.5f};
+  std::uniform_real_distribution<float> posXZ(-m_ground.m_maxLimit * 0.9f, +m_ground.m_maxLimit * 0.9f);
+  glm::vec3 const initPos{posXZ(m_randomEngine), 0.3f, posXZ(m_randomEngine)};
   m_block.m_position = initPos;
   m_block.m_angle = 0.0f;
-  m_block.m_rotationAxis = {0.0f, 1.0f, 3.5f};
+  m_block.m_rotationAxis = {0.0f , 1.0f, 0.0f};
+}
+
+void Window::randomizeBlock(Block &m_block){
+  std::uniform_real_distribution<float> posXZ(-m_ground.m_maxLimit * 0.9f, +m_ground.m_maxLimit * 0.9f);
+  glm::vec3 const initPos{posXZ(m_randomEngine), 0.3f, posXZ(m_randomEngine)};
+  m_block.m_position = initPos;
 }
 
 void Window::onPaint()
@@ -227,6 +237,9 @@ void Window::onUpdate(){
   m_car.m_position.x += sin(m_car.m_angle) * deltaTime * m_speed;
 
 
+  if((abs(m_car.m_position.x - m_block.m_position.x) < 0.2f) && (abs(m_car.m_position.z - m_block.m_position.z) < 0.2f)){
+    randomizeBlock(m_block);
+  }
 
   if (m_car.m_position.z > m_ground.m_maxLimit)
   {

@@ -54,12 +54,14 @@ private:
 
   Block m_block;
 
+
   Ground m_ground;
 
   GLuint m_program{};
 
   void setupCar(Car &m_car);
   void setupBlock(Block &m_block);
+  void randomizeBlock(Block &m_block);
 };
 
 #endif
