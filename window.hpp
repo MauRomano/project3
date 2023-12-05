@@ -25,6 +25,8 @@ private:
 
   glm::ivec2 m_viewportSize{};
 
+  Model m_model_block;
+
   Model m_model;
 
   struct Car
@@ -43,11 +45,21 @@ private:
   glm::mat4 m_projMatrix{1.0f};
   float m_FOV{30.0f};
 
+  struct Block
+  {
+    glm::vec3 m_position{};
+    float m_angle;
+    glm::vec3 m_rotationAxis{};
+  };
+
+  Block m_block;
+
   Ground m_ground;
 
   GLuint m_program{};
 
   void setupCar(Car &m_car);
+  void setupBlock(Block &m_block);
 };
 
 #endif

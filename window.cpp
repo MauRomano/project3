@@ -7,12 +7,12 @@ void Window::onEvent(SDL_Event const &event)
 {
   if (event.type == SDL_KEYDOWN)
   {
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w)
+    if (event.key.keysym.sym == SDLK_UP)
     {
       m_speed += -0.5f;
       if (m_speed < -20.0f) m_speed = -20.0f;
     }
-    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s)
+    if (event.key.keysym.sym == SDLK_DOWN)
     {
       m_speed += 0.5f;
       if (m_speed > 10.0f) m_speed = 10.0f;
@@ -24,13 +24,13 @@ void Window::onEvent(SDL_Event const &event)
   }
   if (event.type == SDL_KEYUP)
   {
-    if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w) &&
+    if ((event.key.keysym.sym == SDLK_UP) &&
         m_speed < 0)
     {
       m_speed += 0.1f;
       if (m_speed > 0.0f) m_speed = 0.0f;
     }
-    if ((event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s) &&
+    if ((event.key.keysym.sym == SDLK_DOWN) &&
         m_speed > 0)
     {
       m_speed += -0.1f;
@@ -64,12 +64,16 @@ void Window::onCreate()
   m_model.loadObj(assetsPath + "box.obj");
   m_model.setupVAO(m_program);
 
+  m_model_block.loadObj(assetsPath + "block.obj");
+  m_model_block.setupVAO(m_program);
+
   glm::vec3 const eye{8.0f, 8.0f, 8.0f};
   glm::vec3 const at{0.0f, 0.0f, 0.0f};
   glm::vec3 const up{0.0f, 1.0f, 0.0f};
   m_viewMatrix = glm::lookAt(eye, at, up);
 
   setupCar(m_car);
+  setupBlock(m_block);
 }
 
 void Window::setupCar(Car &m_car)
@@ -78,6 +82,13 @@ void Window::setupCar(Car &m_car)
   m_car.m_position = initPos;
   m_car.m_angle = 0.0f;
   m_car.m_rotationAxis = {0.0f, 1.0f, 0.0f};
+}
+
+void Window::setupBlock(Block &m_block){
+  glm::vec3 const initPos{1.5f, 0.3f, 3.5f};
+  m_block.m_position = initPos;
+  m_block.m_angle = 0.0f;
+  m_block.m_rotationAxis = {0.0f, 1.0f, 3.5f};
 }
 
 void Window::onPaint()
@@ -107,10 +118,26 @@ void Window::onPaint()
   modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f));
   modelMatrix = glm::rotate(modelMatrix, m_car.m_angle, m_car.m_rotationAxis);
 
-  // Set uniform variable
   abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &modelMatrix[0][0]);
 
   m_model.render();
+  
+ // Set uniform variables that have the same value for every model
+  abcg::glUniformMatrix4fv(viewMatrixLoc, 1, GL_FALSE, &m_viewMatrix[0][0]);
+  abcg::glUniformMatrix4fv(projMatrixLoc, 1, GL_FALSE, &m_projMatrix[0][0]);
+  abcg::glUniform4f(colorLoc, 0.3f, 0.3f, 0.3f, 1.0f); //Grey
+
+  // Renders the block
+  // Compute model matrix of the current m_car
+  glm::mat4 block_modelMatrix{1.0f};
+  block_modelMatrix = glm::translate(block_modelMatrix, m_block.m_position);
+  block_modelMatrix = glm::scale(block_modelMatrix, glm::vec3(0.2f));
+  block_modelMatrix = glm::rotate(block_modelMatrix, m_block.m_angle, m_block.m_rotationAxis);
+
+  // Set uniform variable
+  abcg::glUniformMatrix4fv(modelMatrixLoc, 1, GL_FALSE, &block_modelMatrix[0][0]);
+
+  m_model_block.render();
 
   m_ground.paint();
 
@@ -225,5 +252,6 @@ void Window::onDestroy()
 {
   m_ground.destroy();
   m_model.destroy();
+  m_model_block.destroy();
   abcg::glDeleteProgram(m_program);
 }
